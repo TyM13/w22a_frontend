@@ -30,9 +30,10 @@ axios.request({
 }).then((response) => {
     for (let i = 0; i < response['data'].length; i++) {
 candy_container.insertAdjacentElement('afterbegin',
-`<h1>${response['data'][0]}</h1>`
-
-)}
+`<h1>${response['data'][i][1]}</h1>`
+)
+response
+}
 }).catch((error) => {
 error
 })
