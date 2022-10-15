@@ -11,9 +11,9 @@ function handle_submit(details) {
             candy_image: document.getElementById("candy_url").value,
         }
     }).then((response) => {
- submit_button.insertAdjacentHTML('afterend', '<p>candy created</p>')
+        submit_button.insertAdjacentHTML('afterend', '<p>candy created</p>')
     }).catch((error) => {
-submit_button.insertAdjacentHTML('afterend', '<p>Error</p>')
+        submit_button.insertAdjacentHTML('afterend', '<p>Error inserting new candy</p>')
     });
 }
 
@@ -26,28 +26,35 @@ axios.request({
     url: "http://127.0.0.1:5000/api/candy",
 }).then((response) => {
     for (let i = 0; i < response['data'].length; i++) {
-candy_container.insertAdjacentHTML('afterbegin',
-`<h1>${response['data'][i][1]}</h1>
-<img src=${response['data'][i][2]} />
-<p>${response['data'][i][3]}</p>
-<button id="delete_button">Delete</button>
-`
-)}
+        candy_container.insertAdjacentHTML('afterbegin',
+            `<h1>${response['data'][i][1]}</h1>
+            <img src=${response['data'][i][2]} />
+            <p>${response['data'][i][3]}</p>
+            <button candy_id="${response['data'][i][0]}" id="delete_button">Delete</button>`
+        )
+        let delete_button = document.getElementById('delete_button');
+        delete_button.addEventListener('click', handle_delete)
+    }
 }).catch((error) => {
-error
+    document.getElementById('candy_container').insertAdjacentHTML('afterend',
+        `<h1>error getting candy, please contant us</h1>`)
 })
 
 
 function handle_delete(details) {
     axios.request({
         url: "http://127.0.0.1:5000/api/candy",
-        method: "DELETE"
+        method: "DELETE",
         data: {
-            candy_id: 
+            candy_id: details['target'].getAttribute('candy_id'),
         }
-    }).then(() => {}).catch(() => {});
+    }).then((response) => {
+        document.getElementById('candy_container').insertAdjacentHTML('afterend',
+            `<h1>sucessfully deleted</h1>`)
+    }).catch((error) => {
+        document.getElementById('candy_container').insertAdjacentHTML('afterend',
+            `<h1>error deleting candy, please contant us</h1>`)
+    });
 
 }
 
-let delete_button = document.getElementById('delete_button');
-delete_button.addEventListener('click', handle_delete)
