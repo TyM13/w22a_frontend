@@ -4,7 +4,7 @@ let candy_container = document.getElementById('candy_container');
 function handle_submit(details) {
     // sends a api post request that requires the data, candy name, description and candy image then if successful it will create the candy otherwise it will send an error back
     axios.request({
-        url: `${process.env.VUE_APP_BASE_DOMAIN}/api/candy`,
+        url: `/api/candy`,
         method: "POST",
         data: {
             candy_name: document.getElementById("candy_name").value,
@@ -26,7 +26,7 @@ submit_button.addEventListener('click', handle_submit)
 // sends a api get request that if successful it will display the candy, put a delete button for the candy and get the delete button and set it as the variable delete_button 
 //when the delete_button is clicked it will call the function handle_delete otherwise it will send an error back to the user (put in so it so the info can be attained in the delete function)
 axios.request({
-    url: `${process.env.VUE_APP_BASE_DOMAIN}/api/candy`,
+    url: `/api/candy`,
 }).then((response) => {
     for (let i = 0; i < response['data'].length; i++) {
         candy_container.insertAdjacentHTML('afterbegin',
@@ -46,7 +46,7 @@ axios.request({
 // sends a api get request that if successful it will delete the candy.
 function handle_delete(details) {
     axios.request({
-        url: `${process.env.VUE_APP_BASE_DOMAIN}/api/candy`,
+        url: `/api/candy`,
         method: "DELETE",
         // gets the candy_id from details target and gets the attribute candy_id which is passed along from the get request.
         data: {
